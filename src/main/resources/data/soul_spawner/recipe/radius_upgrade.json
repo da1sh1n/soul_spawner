@@ -1,0 +1,19 @@
+{
+	"type": "soul_spawner:toggleable_shaped",
+	"category": "misc",
+	"pattern": [
+		" A ",
+		"ABA",
+		"CCC"
+	],
+	"key": {
+		"A": "minecraft:ender_pearl",
+		"B": "soul_spawner:upgrade_base",
+		"C": "minecraft:amethyst_block"
+	},
+	"result": {
+		"id": "soul_spawner:radius_upgrade",
+		"count": 1
+	},
+	"upgrade": "radius"
+}

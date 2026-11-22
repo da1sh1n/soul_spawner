@@ -1,0 +1,20 @@
+{
+	"type": "soul_spawner:toggleable_shaped",
+	"category": "misc",
+	"pattern": [
+		" A ",
+		"BCB",
+		"DDD"
+	],
+	"key": {
+		"A": "minecraft:clock",
+		"B": "minecraft:recovery_compass",
+		"C": "soul_spawner:upgrade_base",
+		"D": "minecraft:redstone_block"
+	},
+	"result": {
+		"id": "soul_spawner:time_upgrade",
+		"count": 1
+	},
+	"upgrade": "time"
+}

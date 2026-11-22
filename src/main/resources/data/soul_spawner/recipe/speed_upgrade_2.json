@@ -1,0 +1,19 @@
+{
+	"type": "soul_spawner:toggleable_shaped",
+	"category": "misc",
+	"pattern": [
+		" A ",
+		"ABA",
+		"CCC"
+	],
+	"key": {
+		"A": "minecraft:breeze_rod",
+		"B": "soul_spawner:speed_upgrade_1",
+		"C": "minecraft:quartz_block"
+	},
+	"result": {
+		"id": "soul_spawner:speed_upgrade_2",
+		"count": 1
+	},
+	"upgrade": "speed"
+}

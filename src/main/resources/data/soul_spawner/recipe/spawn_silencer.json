@@ -1,0 +1,19 @@
+{
+	"type": "soul_spawner:toggleable_shaped",
+	"category": "misc",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": "#minecraft:wool",
+		"B": "minecraft:amethyst_shard",
+		"C": "minecraft:note_block"
+	},
+	"result": {
+		"id": "soul_spawner:spawn_silencer",
+		"count": 1
+	},
+	"upgrade": "silencer"
+}

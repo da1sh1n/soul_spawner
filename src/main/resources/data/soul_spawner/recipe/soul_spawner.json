@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"pattern": [
+		"ABA",
+		"ACA",
+		"ABA"
+	],
+	"key": {
+		"A": "minecraft:iron_bars",
+		"B": "minecraft:netherite_scrap",
+		"C": "minecraft:soul_sand"
+	},
+	"result": {
+		"id": "soul_spawner:soul_spawner",
+		"count": 1
+	}
+}

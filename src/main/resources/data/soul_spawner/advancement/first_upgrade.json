@@ -1,0 +1,55 @@
+{
+	"display": {
+		"icon": {
+			"id": "soul_spawner:upgrade_base"
+		},
+		"title": {
+			"translate": "advancements.soul_spawner.first_upgrade.title"
+		},
+		"description": {
+			"translate": "advancements.soul_spawner.first_upgrade.description"
+		}
+	},
+	"criteria": {
+		"range_upgrade": {
+			"trigger": "minecraft:recipe_crafted",
+			"conditions": {
+				"recipe_id": "soul_spawner:range_upgrade"
+			}
+		},
+		"time_upgrade": {
+			"trigger": "minecraft:recipe_crafted",
+			"conditions": {
+				"recipe_id": "soul_spawner:time_upgrade"
+			}
+		},
+		"radius_upgrade": {
+			"trigger": "minecraft:recipe_crafted",
+			"conditions": {
+				"recipe_id": "soul_spawner:radius_upgrade"
+			}
+		},
+		"speed_upgrade_1": {
+			"trigger": "minecraft:recipe_crafted",
+			"conditions": {
+				"recipe_id": "soul_spawner:speed_upgrade_1"
+			}
+		},
+		"speed_upgrade_2": {
+			"trigger": "minecraft:recipe_crafted",
+			"conditions": {
+				"recipe_id": "soul_spawner:speed_upgrade_2"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"range_upgrade",
+			"time_upgrade",
+			"radius_upgrade",
+			"speed_upgrade_1",
+			"speed_upgrade_2"
+		]
+	],
+	"parent": "soul_crystals:root"
+}

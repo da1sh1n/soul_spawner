@@ -1,0 +1,15 @@
+{
+	"display": {
+		"icon": { "id": "soul_spawner:soul_spawner" },
+		"title": { "translate": "advancements.soul_spawner.first_spawner.title" },
+		"description": { "translate": "advancements.soul_spawner.first_spawner.description" }
+	},
+	"criteria": {
+		"crafted": {
+			"trigger": "minecraft:recipe_crafted",
+			"conditions": { "recipe_id": "soul_spawner:soul_spawner" }
+		}
+	},
+	"requirements": [ [ "crafted" ] ],
+	"parent": "soul_crystals:root"
+}

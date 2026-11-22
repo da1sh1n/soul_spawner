@@ -1,0 +1,19 @@
+{
+	"type": "soul_spawner:toggleable_shaped",
+	"category": "misc",
+	"pattern": [
+		" A ",
+		"ABA",
+		"CCC"
+	],
+	"key": {
+		"A": "minecraft:ender_eye",
+		"B": "soul_spawner:upgrade_base",
+		"C": "minecraft:gold_block"
+	},
+	"result": {
+		"id": "soul_spawner:range_upgrade",
+		"count": 1
+	},
+	"upgrade": "range"
+}

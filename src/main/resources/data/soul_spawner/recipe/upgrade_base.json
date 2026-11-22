@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": "minecraft:obsidian",
+		"B": "minecraft:gold_ingot",
+		"C": "minecraft:netherite_scrap"
+	},
+	"result": {
+		"id": "soul_spawner:upgrade_base",
+		"count": 1
+	}
+}
