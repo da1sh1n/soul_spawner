@@ -1,0 +1,16 @@
+{
+	"schemaVersion": 1,
+	"id": "soul_spawner_gametest",
+	"version": "1.0.0",
+	"name": "Soul Spawner game tests",
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-gametest": [
+			"dev.daishin.soulspawner.SoulSpawnerGameTest"
+		]
+	},
+	"depends": {
+		"soul_spawner": "*"
+	}
+}
