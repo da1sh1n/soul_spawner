@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"powered=false": {
+			"model": "soul_spawner:block/soul_spawner"
+		},
+		"powered=true": {
+			"model": "soul_spawner:block/soul_spawner"
+		}
+	}
+}

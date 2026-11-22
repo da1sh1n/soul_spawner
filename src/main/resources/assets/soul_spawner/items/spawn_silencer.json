@@ -1,0 +1,6 @@
+{
+	"model": {
+		"type": "minecraft:model",
+		"model": "soul_spawner:block/spawn_silencer"
+	}
+}
