@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"id": "soul_spawner",
+	"version": "${version}",
+	"name": "Soul Spawner",
+	"description": "Craft a spawner, put a full soul crystal in it and it spawns that mob.",
+	"authors": [
+		"Daishin"
+	],
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"dev.daishin.soulspawner.SoulSpawnerMod"
+		],
+		"client": [
+			"dev.daishin.soulspawner.client.SoulSpawnerClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.1",
+		"java": ">=25",
+		"fabric-api": "*",
+		"daishins_lib": "*",
+		"soul_crystals": "*"
+	}
+}
