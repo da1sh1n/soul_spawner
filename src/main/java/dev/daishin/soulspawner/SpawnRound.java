@@ -27,6 +27,7 @@ record SpawnRound(ServerLevel level, BlockPos pos, EntityType<?> mob, int mobs_p
 	private static final int RESIN_PER_BOSS_ROUND = 4;
 	private static final int SPAWN_EVENT = 2004;
 	private static final int SEARCH_DEPTH = 4; // blocks below the spawner searched for floor, whatever the radius
+	private static final int MIN_COUNT_RADIUS = 4; // blocks around the spawner where its mobs count towards the cap
 	// these need no floor; swimmers need water instead
 	private static final Set<EntityType<?>> FLYERS = Set.of(EntityType.GHAST, EntityType.PHANTOM, EntityType.VEX, EntityType.BAT, EntityType.BEE,
 		EntityType.PARROT, EntityType.ALLAY, EntityType.WITHER, EntityType.ENDER_DRAGON);
@@ -49,10 +50,12 @@ record SpawnRound(ServerLevel level, BlockPos pos, EntityType<?> mob, int mobs_p
 		return true;
 	}
 
-	private AABB spawnArea() { return new AABB(pos).inflate(radius); }
-
-	// only mobs of this spawner's type that carry the no-souls marker count towards the cap
-	private int countNearby() { return level.getEntities(mob, spawnArea(), CrystalAccess::hasNoSouls).size(); }
+	// like a vanilla spawner, mobs that wandered off stop counting; the box is never smaller than MIN_COUNT_RADIUS
+	private int countNearby()
+	{
+		AABB area = new AABB(pos).inflate(Math.max(MIN_COUNT_RADIUS, radius));
+		return level.getEntities(mob, area, CrystalAccess::hasNoSouls).size();
+	}
 
 	// each spawn takes a different random spot from the list; fewer when the list or the cap runs out; returns how many spawned
 	private int spawnAtRandomCandidates(int wanted)

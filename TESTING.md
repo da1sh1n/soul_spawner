@@ -13,7 +13,7 @@ Started over on 2026-11-22: everything unchecked except the items marked below.
 - [ ] Spawns exactly 4 / 6 / 9 per round, only where mobs fit, never above the spawner, one per block
 - [ ] Radius upgrade + slider (1–8); small radius still spawns the full count when there is room
 - [ ] Speed I / II shorten the round
-- [ ] Mob cap stops spawning; resumes after kills
+- [ ] Mob cap stops spawning; resumes after kills, or when mobs wander more than 4 blocks (or the radius) away
 - [ ] Range upgrade: owner at 32 blocks keeps it running
 - [ ] Time upgrade: catch-up after being away; payout slider 3× / 4× / 5×
 - [ ] Boss crystal: 1 per round, warning on time upgrade; Creaking crystal drops resin instead

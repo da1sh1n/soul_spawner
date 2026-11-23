@@ -24,7 +24,9 @@
   the spawner's own height, and spawns the full count (fewer only if the cap or the free spots run out).
   A round where nothing fits sends no redstone pulse and keeps any owed catch-up rounds.
 - Look at a spawner (or open it) to see the time until the next round, "No crystal" or "Waiting for owner".
-- It stops spawning when the mob cap is reached, and continues once mobs are killed.
+- It stops spawning when the mob cap is reached, and continues once mobs are killed. Like a vanilla
+  spawner, only mobs within 4 blocks (or the spawn radius, if bigger) count: mobs that wander off
+  make room for new ones.
 - Spawned mobs drop normal loot and XP but give **no souls**. Buffed mobs (e.g. ominous ones) are
   spawned as the normal mob.
 - Each round sends a redstone pulse (strength 15, 2 ticks) out of every side.

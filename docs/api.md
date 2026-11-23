@@ -9,8 +9,9 @@ registers and what it uses from [Soul Crystals](../../soul_crystals/docs/api.md)
 Only through `CrystalAccess`: `tier`, `mob`, `isFull`, `isBoss`, `hasNoSouls`, `markNoSouls` and
 `config().spawner()`. It never touches crystal data directly.
 
-- Every spawned mob gets `markNoSouls`, so spawner mobs never fill crystals. The mob cap counts
-  mobs in range by type and that marker.
+- Every spawned mob gets `markNoSouls`, riders included, so spawner mobs never fill crystals. Soul
+  Crystals keeps the marker when a mob converts (a slime's split children, a zombie that drowns).
+  The mob cap counts mobs of the type with that marker within max(4, spawn radius) blocks.
 - A boss crystal of `minecraft:creaking` spawns no mob; each boss round it pops 4
   `minecraft:resin_clump` from the top of the block instead.
 - The menu open data carries the allowed payout multipliers and upgrade toggles, so no separate
