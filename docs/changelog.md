@@ -3,6 +3,10 @@
 Versions are major.minor.patch: **major** = a change in game mechanics, **minor** = a feature added or removed,
 **patch** = fixes, refactors, tests and docs. Newest first.
 
+## 2.0.3 (patch)
+
+- README: how this project was made
+
 ## 2.0.2 (patch)
 
 - log the mod version at startup
