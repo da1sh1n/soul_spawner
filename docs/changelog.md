@@ -3,6 +3,10 @@
 Versions are major.minor.patch: **major** = a change in game mechanics, **minor** = a feature added or removed,
 **patch** = fixes, refactors, tests and docs. Newest first.
 
+## 2.0.2 (patch)
+
+- log the mod version at startup
+
 ## 2.0.1 (patch)
 
 - use the Soul Crystals config records directly instead of copies

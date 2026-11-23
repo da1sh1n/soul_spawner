@@ -1,6 +1,6 @@
 # Soul Spawner
 
-Version **2.0.1** — what changed: [docs/changelog.md](docs/changelog.md).
+Version **2.0.2** — what changed: [docs/changelog.md](docs/changelog.md).
 
 Craft your own spawner. Put a full soul crystal in it and it spawns that mob — zombies, blazes,
 even a Warden.

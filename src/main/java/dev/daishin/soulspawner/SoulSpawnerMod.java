@@ -1,5 +1,6 @@
 package dev.daishin.soulspawner;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -18,6 +19,8 @@ public class SoulSpawnerMod implements ModInitializer
 	@Override
 	public void onInitialize()
 	{
+		// the version comes from gradle.properties through fabric.mod.json
+		LOGGER.info("{} {}", MOD_ID, FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().getMetadata().getVersion().getFriendlyString());
 		ModComponents.register();
 		ModBlocks.register();
 		ModItems.register();
