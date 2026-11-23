@@ -124,7 +124,8 @@ record SpawnRound(ServerLevel level, BlockPos pos, EntityType<?> mob, int mobs_p
 			spawned_mob.finalizeSpawn(level, level.getCurrentDifficultyAt(feet), EntitySpawnReason.SPAWNER, null);
 		}
 
-		CrystalAccess.markNoSouls(entity);
+		// riders too, like a spider jockey's skeleton
+		entity.getPassengersAndSelf().forEach(CrystalAccess::markNoSouls);
 		if (silent) entity.setSilent(true);
 		if (!level.tryAddFreshEntityWithPassengers(entity)) return false;
 
