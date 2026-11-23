@@ -25,7 +25,7 @@ public class SoulSpawnerItem extends BlockItem
 		if (!super.canPlace(context, state)) return false;
 		if (!(context.getPlayer() instanceof ServerPlayer player)) return true;
 
-		int max = CrystalAccess.spawnerSettings().max_spawners_per_player();
+		int max = CrystalAccess.spawnerSettings().maxSpawnersPerPlayer();
 		if (max <= 0 || SpawnerCounts.get(player.level().getServer()).countOf(player.getUUID()) < max) return true;
 		player.sendSystemMessage(Component.translatable("message.soul_spawner.spawner_limit", max));
 		return false;

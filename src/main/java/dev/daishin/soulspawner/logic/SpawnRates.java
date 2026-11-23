@@ -1,5 +1,7 @@
 package dev.daishin.soulspawner.logic;
 
+import dev.daishin.soulcrystals.api.CrystalTier;
+import dev.daishin.soulcrystals.api.SpawnerSettings;
 public final class SpawnRates
 {
 	public static final int BASE_INTERVAL_TICKS = 600; // one round every 30 s
@@ -11,7 +13,6 @@ public final class SpawnRates
 	public static final int DEFAULT_SPAWN_RADIUS = 4;
 	public static final int MIN_SPAWN_RADIUS = 1;
 	public static final int MAX_SPAWN_RADIUS = 8;
-	public static final int CRYSTAL_TIERS = 3;
 
 	private static final int[] MOBS_PER_ROUND = {4, 6, 9};
 	private static final double[] SPEED_BY_LEVEL = {1.0, 1.5, 2.25};
@@ -25,8 +26,8 @@ public final class SpawnRates
 	// payout is 1 outside a catch-up payout; the cap grows with it, bosses included
 	public static int mobCap(SpawnerSettings settings, int tier, boolean boss, int payout)
 	{
-		int base_cap = boss ? BOSS_MOB_CAP : settings.baseMobCap(tier);
-		return (int) Math.round(base_cap * settings.mob_cap_scale() * payout);
+		int base_cap = boss ? BOSS_MOB_CAP : settings.mobCaps().get(CrystalTier.values()[tier - 1]);
+		return (int) Math.round(base_cap * settings.mobCapScale() * payout);
 	}
 
 	// progress added per tick towards BASE_INTERVAL_TICKS

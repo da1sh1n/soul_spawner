@@ -4,7 +4,7 @@ import dev.daishin.soulspawner.logic.SlotRules;
 import dev.daishin.soulspawner.logic.SpawnTimer;
 import dev.daishin.soulspawner.logic.TimerState;
 import dev.daishin.soulspawner.logic.Upgrade;
-import dev.daishin.soulspawner.logic.UpgradeToggles;
+import dev.daishin.soulcrystals.api.UpgradeToggles;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -89,7 +89,7 @@ public class SoulSpawnerMenu extends AbstractContainerMenu
 	public boolean hasUpgrade(Upgrade upgrade)
 	{
 		for (Upgrade installed : _container.installedUpgrades(tier()))
-			if (installed == upgrade && _toggles.allows(installed)) return true;
+			if (installed == upgrade && _toggles.isEnabled(installed.toggleKey())) return true;
 		return false;
 	}
 

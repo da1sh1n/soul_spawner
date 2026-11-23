@@ -4,7 +4,7 @@ import dev.daishin.lib.DirtyPockets;
 import dev.daishin.soulspawner.logic.CatchUp;
 import dev.daishin.soulspawner.logic.SpawnRates;
 import dev.daishin.soulspawner.logic.SpawnTimer;
-import dev.daishin.soulspawner.logic.SpawnerSettings;
+import dev.daishin.soulcrystals.api.SpawnerSettings;
 import dev.daishin.soulspawner.logic.TimerState;
 import dev.daishin.soulspawner.logic.Upgrade;
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class SoulSpawnerBlockEntity extends BlockEntity implements ExtendedMenuP
 			return switch (id)
 			{
 				case DATA_RADIUS -> _radius;
-				case DATA_PAYOUT -> CatchUp.resolvePayout(_payout, CrystalAccess.spawnerSettings().payout_multipliers());
+				case DATA_PAYOUT -> CatchUp.resolvePayout(_payout, CrystalAccess.spawnerSettings().payoutMultipliers());
 				case DATA_TIER -> _container.tier();
 				case DATA_BOSS -> isBossCrystal() ? 1 : 0;
 				case DATA_TIMER_STATE -> _timer.state().ordinal();
@@ -112,7 +112,7 @@ public class SoulSpawnerBlockEntity extends BlockEntity implements ExtendedMenuP
 
 	public void setRadius(int radius)
 	{
-		if (!_container.activeUpgrades(CrystalAccess.spawnerSettings().upgrades_enabled()).contains(Upgrade.RADIUS)) return;
+		if (!_container.activeUpgrades(CrystalAccess.spawnerSettings().upgradesEnabled()).contains(Upgrade.RADIUS)) return;
 		_radius = SpawnRates.clampRadius(radius);
 		setChanged();
 	}
@@ -120,8 +120,8 @@ public class SoulSpawnerBlockEntity extends BlockEntity implements ExtendedMenuP
 	public void setPayout(int payout)
 	{
 		SpawnerSettings settings = CrystalAccess.spawnerSettings();
-		boolean has_time = _container.activeUpgrades(settings.upgrades_enabled()).contains(Upgrade.TIME);
-		if (!has_time || isBossCrystal() || !settings.payout_multipliers().contains(payout)) return;
+		boolean has_time = _container.activeUpgrades(settings.upgradesEnabled()).contains(Upgrade.TIME);
+		if (!has_time || isBossCrystal() || !settings.payoutMultipliers().contains(payout)) return;
 		_payout = payout;
 		setChanged();
 	}
@@ -162,7 +162,7 @@ public class SoulSpawnerBlockEntity extends BlockEntity implements ExtendedMenuP
 			return;
 		}
 
-		List<Upgrade> upgrades = _container.activeUpgrades(settings.upgrades_enabled());
+		List<Upgrade> upgrades = _container.activeUpgrades(settings.upgradesEnabled());
 		ServerPlayer owner = level.getServer().getPlayerList().getPlayer(_owner);
 		if (owner == null || !isInRange(owner, level, pos, upgrades.contains(Upgrade.RANGE)))
 		{
@@ -174,14 +174,14 @@ public class SoulSpawnerBlockEntity extends BlockEntity implements ExtendedMenuP
 		int speed_level = 0;
 		for (Upgrade upgrade : upgrades) speed_level = Math.max(speed_level, upgrade.speedLevel());
 
-		boolean catch_up = !boss && settings.catch_up_enabled() && upgrades.contains(Upgrade.TIME);
+		boolean catch_up = !boss && settings.catchUpEnabled() && upgrades.contains(Upgrade.TIME);
 		long online_ticks = OnlineTicks.of(owner);
 		if (catch_up) addMissedRounds(online_ticks, SpawnRates.progressPerTick(speed_level, false, CatchUp.NO_PAYOUT) / SpawnRates.BASE_INTERVAL_TICKS);
 		else _owed = 0;
 		_last_online_ticks = online_ticks;
 
 		boolean paying_out = catch_up && CatchUp.isPayingOut(_owed);
-		int payout = paying_out ? CatchUp.resolvePayout(_payout, settings.payout_multipliers()) : CatchUp.NO_PAYOUT;
+		int payout = paying_out ? CatchUp.resolvePayout(_payout, settings.payoutMultipliers()) : CatchUp.NO_PAYOUT;
 		double progress_per_tick = SpawnRates.progressPerTick(speed_level, boss, payout);
 		_progress += progress_per_tick;
 		if (_progress >= SpawnRates.BASE_INTERVAL_TICKS)
@@ -200,7 +200,7 @@ public class SoulSpawnerBlockEntity extends BlockEntity implements ExtendedMenuP
 
 	private void runRound(ServerLevel level, BlockPos pos, EntityType<?> mob, int tier, boolean boss, List<Upgrade> upgrades, SpawnerSettings settings, int payout, boolean paying_out)
 	{
-		boolean silent = isSilenced(level, pos) && settings.upgrades_enabled().silencer();
+		boolean silent = isSilenced(level, pos) && settings.upgradesEnabled().silencer();
 		int radius = SpawnRates.spawnRadius(upgrades.contains(Upgrade.RADIUS), _radius);
 		SpawnRound round = new SpawnRound(level, pos, mob, SpawnRates.mobsPerRound(tier, boss), boss, radius, SpawnRates.mobCap(settings, tier, boss, payout), silent);
 		if (round.run() && paying_out) _owed -= 1;

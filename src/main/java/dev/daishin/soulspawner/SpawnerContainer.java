@@ -1,7 +1,7 @@
 package dev.daishin.soulspawner;
 
 import dev.daishin.soulspawner.logic.Upgrade;
-import dev.daishin.soulspawner.logic.UpgradeToggles;
+import dev.daishin.soulcrystals.api.UpgradeToggles;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.world.SimpleContainer;
@@ -42,7 +42,7 @@ public class SpawnerContainer extends SimpleContainer
 	{
 		List<Upgrade> active = new ArrayList<>();
 		for (Upgrade upgrade : installedUpgrades(tier()))
-			if (toggles.allows(upgrade)) active.add(upgrade);
+			if (toggles.isEnabled(upgrade.toggleKey())) active.add(upgrade);
 		return active;
 	}
 

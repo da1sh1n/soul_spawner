@@ -1,7 +1,7 @@
 package dev.daishin.soulspawner;
 
-import dev.daishin.soulspawner.logic.SpawnerSettings;
-import dev.daishin.soulspawner.logic.UpgradeToggles;
+import dev.daishin.soulcrystals.api.SpawnerSettings;
+import dev.daishin.soulcrystals.api.UpgradeToggles;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -30,6 +30,6 @@ public record SpawnerOpenData(BlockPos pos, List<Integer> payouts, UpgradeToggle
 	static SpawnerOpenData current(BlockPos pos)
 	{
 		SpawnerSettings settings = CrystalAccess.spawnerSettings();
-		return new SpawnerOpenData(pos, settings.payout_multipliers(), settings.upgrades_enabled());
+		return new SpawnerOpenData(pos, settings.payoutMultipliers(), settings.upgradesEnabled());
 	}
 }

@@ -54,7 +54,7 @@ public class ToggleableShapedRecipe extends NormalCraftingRecipe
 	@Override
 	public boolean matches(CraftingInput input, Level level)
 	{
-		if (!level.isClientSide() && !CrystalAccess.spawnerSettings().upgrades_enabled().isEnabled(_upgrade)) return false;
+		if (!level.isClientSide() && !CrystalAccess.spawnerSettings().upgradesEnabled().isEnabled(_upgrade)) return false;
 		return _shaped.matches(input, level);
 	}
 

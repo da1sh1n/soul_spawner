@@ -6,9 +6,10 @@ import dev.daishin.soulspawner.logic.SlotRules;
 import dev.daishin.soulspawner.logic.SpawnRates;
 import dev.daishin.soulspawner.logic.SpawnTimer;
 import dev.daishin.soulspawner.logic.TimerState;
-import dev.daishin.soulspawner.logic.SpawnerSettings;
+import dev.daishin.soulcrystals.api.CrystalTier;
+import dev.daishin.soulcrystals.api.SpawnerSettings;
 import dev.daishin.soulspawner.logic.Upgrade;
-import dev.daishin.soulspawner.logic.UpgradeToggles;
+import dev.daishin.soulcrystals.api.UpgradeToggles;
 import java.util.List;
 import java.util.Optional;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
@@ -36,7 +37,13 @@ import net.minecraft.world.level.block.Blocks;
 public class SoulSpawnerGameTest
 {
 	private static final double EPSILON = 1e-9;
-	private static final SpawnerSettings DEFAULTS = SpawnerSettings.DEFAULTS;
+	private static final SpawnerSettings DEFAULTS = settings(List.of(3, 4, 5), 1.0);
+
+	// the documented defaults, with caps small 8, medium 16, large 32
+	private static SpawnerSettings settings(List<Integer> payouts, double cap_scale)
+	{
+		return new SpawnerSettings(true, payouts, java.util.Map.of(CrystalTier.SMALL, 8, CrystalTier.MEDIUM, 16, CrystalTier.LARGE, 32), cap_scale, 0, UpgradeToggles.ALL_ENABLED);
+	}
 
 	private static void check(GameTestHelper context, boolean condition, String message)
 	{
@@ -87,7 +94,7 @@ public class SoulSpawnerGameTest
 		check(context, SpawnRates.mobCap(DEFAULTS, 2, true, 1) == 2, "boss cap 2");
 		check(context, SpawnRates.mobCap(DEFAULTS, 3, false, 5) == 160, "large at 5x caps at 160");
 		check(context, SpawnRates.mobCap(DEFAULTS, 2, true, 5) == 10, "boss at 5x caps at 10");
-		SpawnerSettings doubled = new SpawnerSettings(true, List.of(3), List.of(8, 16, 32), 2.0, 0, UpgradeToggles.ALL_ENABLED);
+		SpawnerSettings doubled = settings(List.of(3), 2.0);
 		check(context, SpawnRates.mobCap(doubled, 1, false, 1) == 16, "mob_cap_scale doubles the cap");
 		check(context, SpawnRates.mobCap(doubled, 1, true, 1) == 4, "mob_cap_scale applies to bosses");
 		context.succeed();
@@ -144,8 +151,8 @@ public class SoulSpawnerGameTest
 	public void disabledUpgradesAreInert(GameTestHelper context)
 	{
 		UpgradeToggles no_speed = new UpgradeToggles(true, true, true, false, true);
-		check(context, !no_speed.allows(Upgrade.SPEED_1) && !no_speed.allows(Upgrade.SPEED_2), "speed toggle covers both tiers");
-		check(context, no_speed.allows(Upgrade.RANGE) && no_speed.isEnabled("silencer"), "other toggles stay on");
+		check(context, !no_speed.isEnabled(Upgrade.SPEED_1.toggleKey()) && !no_speed.isEnabled(Upgrade.SPEED_2.toggleKey()), "speed toggle covers both tiers");
+		check(context, no_speed.isEnabled(Upgrade.RANGE.toggleKey()) && no_speed.isEnabled("silencer"), "other toggles stay on");
 		context.succeed();
 	}
 
@@ -246,6 +253,41 @@ public class SoulSpawnerGameTest
 
 	// ========== With A Real Crystal ==========
 
+	// everything the spawner saves comes back the same after a reload
+	@GameTest
+	public void spawnerSurvivesSaveAndLoad(GameTestHelper context)
+	{
+		BlockPos relative = new BlockPos(1, 1, 1);
+		context.setBlock(relative, ModBlocks.SOUL_SPAWNER);
+		SoulSpawnerBlockEntity spawner = context.getBlockEntity(relative, SoulSpawnerBlockEntity.class);
+		spawner.container().setItem(SpawnerContainer.CRYSTAL_SLOT, crystal("large", EntityType.ZOMBIE, 400));
+		spawner.setOwner(java.util.UUID.randomUUID());
+		var registries = context.getLevel().registryAccess();
+		var saved = spawner.saveWithFullMetadata(registries);
+		var loaded = (SoulSpawnerBlockEntity) net.minecraft.world.level.block.entity.BlockEntity.loadStatic(context.absolutePos(relative), context.getBlockState(relative), saved, registries);
+		check(context, loaded != null && spawner.owner().equals(loaded.owner()), "owner survives");
+		check(context, ItemStack.matches(loaded.container().getItem(SpawnerContainer.CRYSTAL_SLOT), spawner.container().getItem(SpawnerContainer.CRYSTAL_SLOT)), "crystal survives");
+		check(context, loaded.saveWithFullMetadata(registries).equals(saved), "every saved field survives");
+		context.succeed();
+	}
+
+	// the per-player spawner limit reads these counts; they must survive a save
+	@GameTest
+	public void spawnerCountsSurviveSave(GameTestHelper context)
+	{
+		java.util.UUID owner = java.util.UUID.randomUUID();
+		SpawnerCounts counts = new SpawnerCounts();
+		counts.add(owner);
+		counts.add(owner);
+		counts.remove(owner);
+		check(context, counts.countOf(owner) == 1, "two placed, one broken: 1");
+		var encoded = SpawnerCounts.CODEC.encodeStart(com.mojang.serialization.JsonOps.INSTANCE, counts).getOrThrow();
+		check(context, SpawnerCounts.CODEC.parse(com.mojang.serialization.JsonOps.INSTANCE, encoded).getOrThrow().countOf(owner) == 1, "count survives the codec");
+		counts.remove(owner);
+		check(context, counts.countOf(owner) == 0, "last one broken: 0");
+		context.succeed();
+	}
+
 	private static ItemStack crystal(String tier_name, EntityType<?> mob, double souls)
 	{
 		ItemStack stack = new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.fromNamespaceAndPath("soul_crystals", tier_name + "_crystal")));
@@ -279,7 +321,7 @@ public class SoulSpawnerGameTest
 		check(context, CrystalAccess.mob(full).orElse(null) == EntityType.ZOMBIE, "mob read from the crystal");
 		check(context, CrystalAccess.isBoss(EntityType.WARDEN) && !CrystalAccess.isBoss(EntityType.ZOMBIE), "boss rule");
 		SpawnerSettings settings = CrystalAccess.spawnerSettings();
-		check(context, settings.equals(SpawnerSettings.DEFAULTS), "default crystals config matches the docs defaults");
+		check(context, settings.equals(DEFAULTS), "default crystals config matches the docs defaults");
 		context.succeed();
 	}
 
